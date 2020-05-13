@@ -8,7 +8,9 @@ const Profile: React.FC = () => {
   const data = useFetch<GHProfile>("https://api.github.com/users/nikgraf");
   return (
     <div>
-      <Img src={data.avatar_url} alt={`Portrait of ${data.login}`} />
+      <React.Suspense fallback="avatar loading...">
+        <Img src={data.avatar_url} alt={`Portrait of ${data.login}`} />
+      </React.Suspense>
       <div>Username: {data.login}</div>
     </div>
   );
