@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Profile from "./components/Profile";
+import Repositories from "./components/Repositories";
 
 const App = () => {
   const [user, setUser] = React.useState("nikgraf");
@@ -19,14 +20,10 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <ErrorBoundary fallback={<div>Oops</div>}>
-          <React.Suspense
-            fallback={<img src={logo} className="App-logo" alt="logo" />}
-          >
-            <Profile user={user} />
-          </React.Suspense>
-        </ErrorBoundary>
-        <nav>
+        <nav style={{ position: "relative" }}>
+          {isPending && (
+            <div style={{ position: "absolute", top: -20 }}>loading...</div>
+          )}
           <button onClick={load("facebook")} disabled={isPending}>
             Facebook
           </button>
@@ -36,8 +33,19 @@ const App = () => {
           <button onClick={load("nikgraf")} disabled={isPending}>
             NikGraf
           </button>
-          {isPending && <div style={{ position: "absolute" }}>loading...</div>}
         </nav>
+        <ErrorBoundary fallback={<div>Oops</div>}>
+          <React.SuspenseList revealOrder="forwards" tail="collapsed">
+            <React.Suspense
+              fallback={<img src={logo} className="App-logo" alt="logo" />}
+            >
+              <Profile user={user} />
+            </React.Suspense>
+            <React.Suspense fallback="loading repos...">
+              <Repositories username={user} />
+            </React.Suspense>
+          </React.SuspenseList>
+        </ErrorBoundary>
       </header>
     </div>
   );
