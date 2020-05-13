@@ -4,8 +4,8 @@ import Img from "./Img";
 
 type GHProfile = { avatar_url: string; login: string };
 
-const Profile: React.FC = () => {
-  const data = useFetch<GHProfile>("https://api.github.com/users/nikgraf");
+const Profile: React.FC<{ user: string }> = ({ user }) => {
+  const data = useFetch<GHProfile>(`https://api.github.com/users/${user}`);
   return (
     <div>
       <React.Suspense fallback="avatar loading...">
