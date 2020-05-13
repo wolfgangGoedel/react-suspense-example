@@ -27,9 +27,16 @@ const App = () => {
           </React.Suspense>
         </ErrorBoundary>
         <nav>
-          <button onClick={load("facebook")}>Facebook</button>
-          <button onClick={load("microsoft")}>Microsoft</button>
-          <button onClick={load("nikgraf")}>NikGraf</button>
+          <button onClick={load("facebook")} disabled={isPending}>
+            Facebook
+          </button>
+          <button onClick={load("microsoft")} disabled={isPending}>
+            Microsoft
+          </button>
+          <button onClick={load("nikgraf")} disabled={isPending}>
+            NikGraf
+          </button>
+          {isPending && <div style={{ position: "absolute" }}>loading...</div>}
         </nav>
       </header>
     </div>
