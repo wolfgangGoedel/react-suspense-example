@@ -1,4 +1,5 @@
 import React from "react";
+import wrapPromise from "../utils/wrapPromise";
 
 /**
  * Goal: Combine loading, success & error
@@ -23,29 +24,18 @@ import React from "react";
  * status === "error"      -> throw Error
  */
 
-let status = "pending";
 const waitPromise = new Promise((resolve, reject) => {
   setTimeout(() => {
-    status = "success";
     resolve();
     // status = "error";
     // reject();
   }, 2000);
 });
 
+const resource = wrapPromise(waitPromise.then(() => "Yay"));
+
 const WaitForMeTwoSec = () => {
-  const loadTwoSec = () => {
-    if (status === "success") {
-      return "Yay";
-    }
-    if (status === "error") {
-      throw new Error("Failed");
-    }
-
-    throw waitPromise;
-  };
-
-  return <div>{loadTwoSec()}</div>;
+  return <div>{resource.read()}</div>;
 };
 
 export default WaitForMeTwoSec;
